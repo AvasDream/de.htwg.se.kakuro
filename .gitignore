@@ -9,7 +9,7 @@ bin/
 # Intellij
 .idea/
 target/
-
+!target/scala-2.11/classes/log4j2.xml
 # Maven
 log/
 target/

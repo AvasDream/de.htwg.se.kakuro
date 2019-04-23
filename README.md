@@ -4,6 +4,23 @@
 HTWG Kakuro
 =========================
 
+
+## Docker
+
+Build:
+
+`docker build . -t scala`
+
+Run:
+
+`docker run -it --volume="C:\PATH\git\kakuro:/root/src" --rm scala /bin/bash`
+
+Inside the Container execute:
+
+`sbt run`
+
+
+
 This is a kakuro game project as used in the
 class Software Engineering at the University of Applied Science HTWG Konstanz
 

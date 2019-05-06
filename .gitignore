@@ -1,6 +1,6 @@
 # Mac
 .DS_Store
-
+grid.json
 # Eclipse
 bin/
 .settings/

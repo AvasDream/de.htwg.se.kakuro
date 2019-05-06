@@ -80,7 +80,7 @@ class Tui(controller: ControllerInterface) extends Reactor {
     logger.info("Wert löschen: d row col")
     logger.info("Undo: u")
     logger.info("Redo: r")
-    logger.info("Save: s")
+    logger.info("Save: S")
     logger.info("Load: l")
   }
   def isValid(value: Int): Boolean = {

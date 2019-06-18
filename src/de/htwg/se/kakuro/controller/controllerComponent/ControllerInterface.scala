@@ -16,6 +16,8 @@ trait ControllerInterface extends Publisher {
   def redo(): Unit
   def save(): Unit
   def load(): Unit
+  def check(): Boolean
+  def setGameResult(): Unit
   def isSet(row: Int, col: Int): Boolean
   def initField(): Unit
   def cell(row: Int, col: Int): CellInterface
@@ -33,6 +35,8 @@ trait ControllerInterface extends Publisher {
   def available(row: Int, col: Int): Set[Int]
   def gameStatus: GameStatus
   def statusText: String
+  def getField: FieldInterface
+  def setField(field: FieldInterface): Unit
 }
 
 import scala.swing.event.Event

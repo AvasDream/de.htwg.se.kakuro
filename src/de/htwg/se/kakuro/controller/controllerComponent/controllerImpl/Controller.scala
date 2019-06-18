@@ -1,10 +1,13 @@
 package de.htwg.se.kakuro.controller.controllerComponent.controllerImpl
 
+import akka.actor.{ ActorSystem, Props, Actor }
 import com.google.inject.{ Guice, Inject }
 import net.codingwell.scalaguice.InjectorExtensions._
 import de.htwg.se.kakuro.KakuroModule
 import de.htwg.se.kakuro.controller.controllerComponent.GameStatus._
 import de.htwg.se.kakuro.controller.controllerComponent.{ CellChanged, ControllerInterface, GameStatus, SelectorChanged }
+import de.htwg.se.kakuro.controller.controllerComponent.checkImpl.Checker
+import de.htwg.se.kakuro.controller.controllerComponent.checkImpl.Checker._
 import de.htwg.se.kakuro.model.fieldComponent.FieldImpl.{ Field, FieldCreator }
 import de.htwg.se.kakuro.model.fieldComponent.{ CellInterface, FieldInterface }
 import de.htwg.se.kakuro.model.fileIOComponent.FileIOInterface
@@ -13,7 +16,9 @@ import org.apache.logging.log4j.{ LogManager, Logger }
 
 import scala.swing.Publisher
 
-class Controller @Inject() (var field: FieldInterface) extends ControllerInterface with Publisher {
+class Controller @Inject() () extends ControllerInterface with Publisher {
+  var generator = new FieldCreator()
+  var field: FieldInterface = generator.createNewField(8)
   val logger: Logger = LogManager.getLogger(this.getClass.getName)
   val injector = Guice.createInjector(new KakuroModule)
   val fileIo = injector.instance[FileIOInterface]
@@ -22,6 +27,14 @@ class Controller @Inject() (var field: FieldInterface) extends ControllerInterfa
   def statusText: String = GameStatus.message(gameStatus)
   var selection: (Int, Int) = (-1, -1)
   var showAllCandidates: Boolean = false
+  var gameResult = false
+
+  val system = ActorSystem("MySystem")
+  val actor = system.actorOf(Props[Checker], "CheckerActor")
+
+  def setField(field: FieldInterface): Unit = {
+    this.field = field
+  }
 
   def undo(): Unit = {
     undoManager.undoStep
@@ -55,7 +68,16 @@ class Controller @Inject() (var field: FieldInterface) extends ControllerInterfa
     publish(new CellChanged)
   }
 
-  def initField(): Unit = {
+  def check: Boolean = {
+    actor ! Checker.Check(this)
+    return gameResult
+  }
+
+  def setGameResult(): Unit = {
+    gameResult = true
+  }
+
+  def initField(): Unit = { // Diese Funktion wird in Model geschoben
     var generator = new FieldCreator()
     field = generator.createNewField(8)
     //field = generator.fill(field)
@@ -140,4 +162,6 @@ class Controller @Inject() (var field: FieldInterface) extends ControllerInterfa
   override def isValid: Boolean = field.valid
 
   override def isSolved: Boolean = field.solved
+
+  override def getField: FieldInterface = field
 }

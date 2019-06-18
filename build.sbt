@@ -25,6 +25,11 @@ libraryDependencies += "org.scala-lang" % "scala-swing" % "2.11+"
 libraryDependencies += "com.google.inject" % "guice" % "3.0"
 libraryDependencies += "net.codingwell" %% "scala-guice" % "4.1.0"
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.5.15"
+libraryDependencies += "com.typesafe.akka" %% "akka-http"   % "10.1.8"
+libraryDependencies += "com.typesafe.akka" %% "akka-stream" % "2.5.19"
+libraryDependencies += "com.ibm" %% "couchdb-scala" % "0.5.1"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "2.3.2"
+libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.8"
 
 //coverageExcludedPackages := ".*aview.*"
 //coverageHighlighting := true

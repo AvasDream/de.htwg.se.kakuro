@@ -22,7 +22,7 @@ object Kakuro {
   controller.initField()
   def main(args: Array[String]): Unit = {
     do {
-      #Microservice Branch
+      //Microservice Branch
       tui.printTui()
       input = scala.io.StdIn.readLine()
       if (input == "gui") {

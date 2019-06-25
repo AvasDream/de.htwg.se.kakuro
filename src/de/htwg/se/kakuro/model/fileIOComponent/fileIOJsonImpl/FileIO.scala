@@ -5,7 +5,8 @@ import de.htwg.se.kakuro.model.fileIOComponent.FileIOInterface
 import org.apache.logging.log4j.{ LogManager, Logger }
 import de.htwg.se.kakuro.model.fieldComponent.FieldImpl.Field
 import play.api.libs.json._
-
+import scala.util.{ Success, Failure }
+import de.htwg.se.kakuro.model.fieldComponent.FieldImpl.{ Field, FieldCreator }
 import scala.io.Source
 
 class FileIO extends FileIOInterface {
@@ -13,36 +14,44 @@ class FileIO extends FileIOInterface {
   override def load: Option[FieldInterface] = {
     val logger: Logger = LogManager.getLogger(this.getClass.getName)
     var gridOption: Option[FieldInterface] = None
-    val source: String = Source.fromFile("grid.json").getLines.mkString
-    val json: JsValue = Json.parse(source)
-    val width: Int = (json \ "grid" \ "width").get.toString.toInt
-    val height: Int = (json \ "grid" \ "height").get.toString.toInt
+    val source: String = Source.fromFile("grid.json").getLines.mkString match {
+      case Success(source) => {
+        val json: JsValue = Json.parse(source)
+        val width: Int = (json \ "grid" \ "width").get.toString.toInt
+        val height: Int = (json \ "grid" \ "height").get.toString.toInt
 
-    gridOption = Some(new Field(width, height))
+        gridOption = Some(new Field(width, height))
 
-    gridOption match {
-      case Some(grid) => {
-        var _grid = grid
-        for (index <- 0 until width * height) {
-          val row = (json \\ "row")(index).as[Int]
-          val col = (json \\ "col")(index).as[Int]
-          val cell = (json \\ "cell")(index)
-          val cellType = (cell \ "type").as[Int]
-          logger.debug("CELLTYPE:" + cellType)
-          val value = (cell \ "value").as[Int]
-          val right = (cell \ "right").as[Int]
-          val down = (cell \ "down").as[Int]
-          cellType match {
-            case 0 => _grid = _grid.set(row, col)
-            case 1 => _grid = _grid.set(row, col, value)
-            case 2 => _grid = _grid.set(row, col, right, down)
+        gridOption match {
+          case Some(grid) => {
+            var _grid = grid
+            for (index <- 0 until width * height) {
+              val row = (json \\ "row")(index).as[Int]
+              val col = (json \\ "col")(index).as[Int]
+              val cell = (json \\ "cell")(index)
+              val cellType = (cell \ "type").as[Int]
+              logger.debug("CELLTYPE:" + cellType)
+              val value = (cell \ "value").as[Int]
+              val right = (cell \ "right").as[Int]
+              val down = (cell \ "down").as[Int]
+              cellType match {
+                case 0 => _grid = _grid.set(row, col)
+                case 1 => _grid = _grid.set(row, col, value)
+                case 2 => _grid = _grid.set(row, col, right, down)
+              }
+            }
+            gridOption = Some(_grid)
           }
         }
-        gridOption = Some(_grid)
+        gridOption
       }
-      case None =>
+      case Failure(_) => {
+        var generator = new FieldCreator()
+        val grid = generator.createNewField(8)
+        grid.toString()
+      }
     }
-    gridOption
+    gridOption.toString()
   }
 
   override def save(grid: FieldInterface): Unit = {

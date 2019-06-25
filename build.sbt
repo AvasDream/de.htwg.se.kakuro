@@ -5,7 +5,7 @@ scalaVersion  := "2.11.8"
 scalacOptions := Seq("-unchecked", "-feature", "-deprecation", "-encoding", "utf8","-Dlog4j.configurationFile=log4j2.xml")
 
 resolvers += Resolver.jcenterRepo
-
+resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 scalaSource in Compile := baseDirectory.value / "src/de/htwg/se/kakuro"
 
 

@@ -13,7 +13,7 @@ Build:
 
 Run:
 
-`docker run -it --volume="C:\PATH\git\kakuro:/root/src" --rm scala /bin/bash`
+`docker run -it -p "8080:8080" -p "8090:8090" --volume="$(pwd):/root/src" --rm scala /bin/bash`
 
 Inside the Container execute:
 

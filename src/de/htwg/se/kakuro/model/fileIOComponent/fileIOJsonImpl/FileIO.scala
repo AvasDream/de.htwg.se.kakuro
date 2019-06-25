@@ -48,10 +48,10 @@ class FileIO extends FileIOInterface {
       case Failure(_) => {
         var generator = new FieldCreator()
         val grid = generator.createNewField(8)
-        grid.toString()
+        grid
       }
     }
-    gridOption.toString()
+    gridOption
   }
 
   override def save(grid: FieldInterface): Unit = {

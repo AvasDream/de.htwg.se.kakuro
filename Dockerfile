@@ -21,3 +21,4 @@ RUN cd /root/src && sbt compile
 RUN echo 'alias e=exit' >> ~/.bashrc
 RUN echo 'alias c=clear' >> ~/.bashrc
 WORKDIR /root/src
+CMD sbt run

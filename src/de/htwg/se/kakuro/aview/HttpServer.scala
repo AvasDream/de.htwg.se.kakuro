@@ -114,7 +114,7 @@ class HttpServer(controller: ControllerInterface, tui: Tui) {
     complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>HTWG Kakuro</h1>" + toHtml))
   }
 
-  val bindingFuture = Http().bindAndHandle(route, "localhost", 8090)
+  val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
 
   def unbind = {
     bindingFuture

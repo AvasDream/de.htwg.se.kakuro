@@ -8,6 +8,7 @@ resolvers += Resolver.jcenterRepo
 
 scalaSource in Compile := baseDirectory.value / "src/de/htwg/se/kakuro"
 
+resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 
 libraryDependencies ++= {
   val scalaTestV       = "3.0.1"

@@ -3,6 +3,19 @@
 [![Coverage Status](https://coveralls.io/repos/github/AvasDream/de.htwg.se.kakuro/badge.svg?branch=master)](https://coveralls.io/github/AvasDream/de.htwg.se.kakuro?branch=master)
 HTWG Kakuro
 =========================
+## Präsentation
+
+```
+set-variable -name DISPLAY -value 192.168.178.26:0.0
+
+docker run -ti --rm -e DISPLAY=$DISPLAY firefox
+
+docker run -it -p 8080:8080 --rm -v "$(pwd):/root/src" -e DISPLAY=$DISPLAY scala bash
+
+
+# Stopped containers are blocking port
+docker system prune -f
+```
 
 
 ## Docker
